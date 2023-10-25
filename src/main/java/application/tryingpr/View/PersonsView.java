@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -17,7 +18,6 @@ import javafx.util.Callback;
 import application.tryingpr.Models.Person;
 import application.tryingpr.helperClasses.Role;
 
-import java.io.File;
 
 public class PersonsView extends VBox{
     private TableView<Person> tableView;
@@ -46,8 +46,15 @@ public class PersonsView extends VBox{
                 return new TableCell<>() {
                     private final Button editButton = new Button("Edit");
                     private final Button deleteButton = new Button("Delete");
-                    private ImageView editIcon = new ImageView("edit.png");
-                    private ImageView deleteIcon = new ImageView("delete.png");
+
+                    String absolutePathDelete = "C:\\Users\\xhbaz\\OneDrive\\Desktop\\tryingpr\\res\\delete.png";
+                    Image imageDelete = new Image("file:" + absolutePathDelete);
+                    ImageView deleteIcon = new ImageView(imageDelete);
+
+                    String absolutePathEdit = "C:\\Users\\xhbaz\\OneDrive\\Desktop\\tryingpr\\res\\edit.png";
+                    Image imageEdit = new Image("file:" + absolutePathEdit);
+                    ImageView editIcon = new ImageView(imageEdit);
+
 
                     {
 
