@@ -25,14 +25,16 @@ import application.tryingpr.Models.Administrator;
 import application.tryingpr.Models.Book;
 import application.tryingpr.Models.Librarian;
 import application.tryingpr.Models.Manager;
-import application.tryingpr.Models.*;
 import application.tryingpr.helperClasses.Role;
 import application.tryingpr.helperClasses.writingToFiles;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.time.LocalDate;
 
 public class AdminPanel extends BorderPane {
 
+    private static final Logger logger = LoggerFactory.getLogger(writingToFiles.class);
     MenuBar bar;
     public BooksView view = new BooksView(Controller.books);
     public PersonsView personsView = new PersonsView(Controller.people);
@@ -245,7 +247,8 @@ public class AdminPanel extends BorderPane {
                     alert.showAndWait();
                 } catch (Exception e) {
                     // Catch any exception and show error alert
-                    e.printStackTrace();
+                    String exceptionMessage = "An error occurred: " + e.getMessage();
+                    logger.error(() -> exceptionMessage);
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Please make sure you don't enter any character in salary field");

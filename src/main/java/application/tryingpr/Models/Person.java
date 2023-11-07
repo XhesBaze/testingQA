@@ -4,11 +4,13 @@ import application.tryingpr.helperClasses.Role;
 
 public abstract class Person {
 
-    private String name, birthday, phone;
+    private String name;
+    private final String birthday;
+    private String phone;
 
     private int salary;
     private String userName;
-    private String password;
+    private final String password;
     private Role role;
 
     public Person(String name, String userName, String password, String Birthday, int salary, String Phone,  Role role) {
@@ -19,14 +21,6 @@ public abstract class Person {
         this.birthday = Birthday;
         this.phone = Phone;
         this.salary = salary;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
     }
 
     public String getPhone() {
@@ -57,9 +51,6 @@ public abstract class Person {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Role getRole() {
         return role;

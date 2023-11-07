@@ -4,7 +4,7 @@ import java.time.LocalDate;
 public class Book {
     private String isbn; // The ISBN of the book
     private String title; // The title of the book
-    private double purchasePrice, totalPurchased; // The purchase price of the book and the total amount purchased
+    private double purchasePrice;
 
     private double originalPrice; // The original price of the book
     private double sellPrice; // The selling price of the book
@@ -13,27 +13,6 @@ public class Book {
 
     private LocalDate purchaseDate; // The date when the book was purchased
 
-    // A default constructor
-    public Book(){}
-
-    // A constructor with isbn, title, purchase price, selling price, and category
-    public Book(String isbn,String title,double purchasePrice,double sellPrice,String category) {
-        this.isbn = isbn;
-        this.title = title;
-        this.purchasePrice = purchasePrice;
-        this.sellPrice = sellPrice;
-        this.category = category;
-    }
-
-    // A constructor with isbn, title, purchase price, selling price, category, and stock
-    public Book(String isbn,String title,double purchasePrice,double sellPrice,String category, int stock) {
-        this.isbn = isbn;
-        this.title = title;
-        this.purchasePrice = purchasePrice;
-        this.sellPrice = sellPrice;
-        this.category = category;
-        this.stock = stock;
-    }
 
     // A constructor with all attributes of the book
     public Book(String isbn, String title, double purchasePrice, double originalPrice, double sellPrice, String author, String category, String supplier, int stock, LocalDate purchaseDate) {
@@ -47,7 +26,6 @@ public class Book {
         this.supplier = supplier;
         this.stock = stock;
         this.purchaseDate = purchaseDate;
-        this.totalPurchased = stock * purchasePrice;
     }
 
     // Getter method for ISBN
@@ -55,15 +33,6 @@ public class Book {
         return isbn;
     }
 
-    // Getter method for totalPurchased
-    public double getTotalPurchased() {
-        return totalPurchased;
-    }
-
-    // Setter method for totalPurchased
-    public void setTotalPurchased(double totalPurchased) {
-        this.totalPurchased = totalPurchased;
-    }
 
     // Getter method for title
     public String getTitle() {
