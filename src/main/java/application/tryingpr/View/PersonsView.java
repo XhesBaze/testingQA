@@ -19,6 +19,7 @@ import application.tryingpr.Models.Person;
 import application.tryingpr.helperClasses.Role;
 
 
+@SuppressWarnings("ALL")
 public class PersonsView extends VBox{
     private TableView<Person> tableView;
 

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import application.tryingpr.Models.Book;
 
+@SuppressWarnings("ALL")
 public class BooksView extends VBox{
     private TableView<Book> tableView;
     private ObservableList<Book> books;

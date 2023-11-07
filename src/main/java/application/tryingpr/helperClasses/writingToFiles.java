@@ -4,16 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import application.tryingpr.Controllers.Controller;
 import application.tryingpr.Models.*;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
+
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class writingToFiles {
 
-    //Method that is used to read the information about the person loggin in.
+    private static final Logger logger = LoggerFactory.getLogger(writingToFiles.class);
+
+    //Method that is used to read the information about the person logging in.
     //Based on their username and password(which will be saved in a file)
     //The program decides with which credentials in the text the user's input matches with
     //In the roles.txt file,the role of the person is stored as the third element
@@ -65,7 +71,8 @@ public class writingToFiles {
             writer.close();
         } catch (IOException exception) {
             // Print the stack trace if an IOException is thrown
-            exception.printStackTrace();
+            String exceptionMessage = "An error occurred: " + exception.getMessage();
+            logger.error(() -> exceptionMessage);
         }
     }
 
@@ -103,25 +110,28 @@ public class writingToFiles {
         File file = new File("res/persons.txt");
         try {
             // Create the file if it does not exist
-            file.createNewFile();
-            // Create a Scanner object to read the file
-            Scanner scanner = new Scanner(file);
-            // Read the file line by line
-            while (scanner.hasNextLine()){
-                // Split the line into data fields
-                String[] Data = scanner.nextLine().split(",");
-                // Determine the type of person based on the role field
-                if (Data[6].equalsIgnoreCase("Librarian")){
-                    // Create a new Librarian object using the data fields
-                    people.add(new Librarian(Data[0],Data[4],Data[5],Data[1],Integer.parseInt(Data[3]),Data[2],Role.Librarian,Double.parseDouble(Data[7])));
-                }else if (Data[6].equalsIgnoreCase("Manager")){
-                    // Create a new Manager object using the data fields
-                    people.add(new Manager(Data[0],Data[4],Data[5],Data[1],Integer.parseInt(Data[3]),Data[2],Role.Manager));
-                }else if (Data[6].equalsIgnoreCase("Administrator")){
-                    // Create a new Administrator object using the data fields
-                    people.add(new Administrator(Data[0],Data[4],Data[5],Data[1],Integer.parseInt(Data[3]),Data[2],Role.Administrator));
+            boolean fileCreated = file.createNewFile();
+            if(fileCreated){
+
+                Scanner scanner = new Scanner(file);
+                // Read the file line by line
+                while (scanner.hasNextLine()){
+                    // Split the line into data fields
+                    String[] Data = scanner.nextLine().split(",");
+                    // Determine the type of person based on the role field
+                    if (Data[6].equalsIgnoreCase("Librarian")){
+                        // Create a new Librarian object using the data fields
+                        people.add(new Librarian(Data[0],Data[4],Data[5],Data[1],Integer.parseInt(Data[3]),Data[2],Role.Librarian,Double.parseDouble(Data[7])));
+                    }else if (Data[6].equalsIgnoreCase("Manager")){
+                        // Create a new Manager object using the data fields
+                        people.add(new Manager(Data[0],Data[4],Data[5],Data[1],Integer.parseInt(Data[3]),Data[2],Role.Manager));
+                    }else if (Data[6].equalsIgnoreCase("Administrator")){
+                        // Create a new Administrator object using the data fields
+                        people.add(new Administrator(Data[0],Data[4],Data[5],Data[1],Integer.parseInt(Data[3]),Data[2],Role.Administrator));
+                    }
                 }
             }
+            // Create a Scanner object to read the file
         } catch (IOException e) {
             // Throw a runtime exception if there is an error reading the file
             throw new RuntimeException(e);
@@ -165,7 +175,7 @@ public class writingToFiles {
 // Check if the directory exists
         if (file.exists()) {
 // If it exists, return the number of files (bills) in the directory
-            return file.listFiles().length;
+             return Objects.requireNonNull(file.listFiles()).length;
         }
 // If the directory does not exist, return 0
         return 0;
@@ -179,21 +189,23 @@ public class writingToFiles {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
             // Create a new file
-            file.createNewFile();
-            // Create a FileWriter to write to the file
-            FileWriter writer = new FileWriter(file);
-            // Write the bill header information
-            writer.write("Bill Id: " + billId);
-            writer.write("\nDate: " + dateFormat.format(calendar.getTime()));
-            // Write the books included in the bill
-            int i = 0;
-            for (Book book: books) {
-                writer.write("\n" + ++i + ": " + book.toStringBill());
+            boolean fileCreated = file.createNewFile();
+            if(fileCreated){
+                FileWriter writer = new FileWriter(file);
+                // Write the bill header information
+                writer.write("Bill Id: " + billId);
+                writer.write("\nDate: " + dateFormat.format(calendar.getTime()));
+                // Write the books included in the bill
+                int i = 0;
+                for (Book book: books) {
+                    writer.write("\n" + ++i + ": " + book.toStringBill());
+                }
+                // Write the total bill amount
+                writer.write("\nTotal: " + totalBill);
+                // Close the FileWriter
+                writer.close();
             }
-            // Write the total bill amount
-            writer.write("\nTotal: " + totalBill);
-            // Close the FileWriter
-            writer.close();
+
         } catch (IOException e) {
             // Throw a runtime exception if an IOException occurs
             throw new RuntimeException(e);
@@ -249,15 +261,20 @@ public class writingToFiles {
         // Create the file "res/books.txt"
         File file = new File("res/books.txt");
         try {
-            file.createNewFile();
-            // Create a FileWriter instance to write the data to the file
-            FileWriter writer = new FileWriter(file);
-            // Write each book's information to the file
-            for (Book book: Controller.books){
-                writer.write(book.toString() + "\n");
+            boolean fileCreated = file.createNewFile();
+
+            if(fileCreated){
+                // Create a FileWriter instance to write the data to the file
+                FileWriter writer = new FileWriter(file);
+                // Write each book's information to the file
+                for (Book book: Controller.books){
+                    writer.write(book.toString() + "\n");
+
+                    // Close the FileWriter
+                    writer.close();
+                }
             }
-            // Close the FileWriter
-            writer.close();
+
         } catch (IOException e) {
             // In case of IOException, throw a new RuntimeException with the caught exception
             throw new RuntimeException(e);
@@ -268,12 +285,14 @@ public class writingToFiles {
     public static void writePersons(){
         File file = new File("res/persons.txt");
         try {
-            file.createNewFile();
-            FileWriter writer = new FileWriter(file);
-            for (Person person: Controller.people){
-                writer.write(person.toString() + "\n");
+            boolean fileCreated = file.createNewFile();
+            if(fileCreated){
+                FileWriter writer = new FileWriter(file);
+                for (Person person: Controller.people){
+                    writer.write(person.toString() + "\n");
+                }
+                writer.close();
             }
-            writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -284,10 +303,12 @@ public class writingToFiles {
         try {
             FileOutputStream fos = new FileOutputStream(file);
             DataOutputStream dos = new DataOutputStream(fos);
-            file.createNewFile();
-            dos.writeDouble(total);
-            dos.close();
-            fos.close();
+            boolean fileCreated = file.createNewFile();
+            if(fileCreated){
+                dos.writeDouble(total);
+                dos.close();
+                fos.close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -298,10 +319,12 @@ public class writingToFiles {
         try {
             FileOutputStream fos = new FileOutputStream(file);
             DataOutputStream dos = new DataOutputStream(fos);
-            file.createNewFile();
-            dos.writeDouble(total);
-            dos.close();
-            fos.close();
+            boolean fileCreated = file.createNewFile();
+            if(fileCreated){
+                dos.writeDouble(total);
+                dos.close();
+                fos.close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -312,10 +335,12 @@ public class writingToFiles {
         try {
             FileOutputStream fos = new FileOutputStream(file);
             DataOutputStream dos = new DataOutputStream(fos);
-            file.createNewFile();
-            dos.writeInt(quantity);
-            dos.close();
-            fos.close();
+            boolean fileCreated = file.createNewFile();
+            if(fileCreated){
+                dos.writeInt(quantity);
+                dos.close();
+                fos.close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

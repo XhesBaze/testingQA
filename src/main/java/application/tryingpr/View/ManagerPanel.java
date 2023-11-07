@@ -31,6 +31,7 @@ import application.tryingpr.Models.*;
 import application.tryingpr.helperClasses.Role;
 import application.tryingpr.helperClasses.writingToFiles;
 
+@SuppressWarnings("ALL")
 public class ManagerPanel extends BorderPane {
     MenuBar bar;
     public BooksView view = new BooksView(Controller.books);

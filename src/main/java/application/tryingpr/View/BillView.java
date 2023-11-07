@@ -2,17 +2,14 @@ package application.tryingpr.View;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
@@ -25,17 +22,20 @@ import application.tryingpr.Models.Librarian;
 import application.tryingpr.Models.Person;
 import application.tryingpr.helperClasses.writingToFiles;
 
-import java.util.ArrayList;
+
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@SuppressWarnings("ALL")
 public class BillView extends BorderPane{
-    private TableView<Book> table = new TableView<>();
-    private AtomicInteger quantity = new AtomicInteger();
+
+    @SuppressWarnings(value = "unchecked")
+    private final TableView<Book> table = new TableView<>();
+    private final AtomicInteger quantity = new AtomicInteger();
     private double totalPrice = 0.0;
     private int billId = writingToFiles.getNumberOfBills();
-    private ObservableList<Book> books1 = FXCollections.observableArrayList();
-    private Label totalPriceLabel = new Label("Total: $" + totalPrice);
+    private final ObservableList<Book> books1 = FXCollections.observableArrayList();
+    private final Label totalPriceLabel = new Label("Total: $" + totalPrice);
 
     public static double total = Controller.totalBill;
     public static int booksSold = Controller.numberOfBooksSold;
@@ -50,7 +50,7 @@ public class BillView extends BorderPane{
         generateBillButton.setCursor(Cursor.HAND);
         generateBillButton.setPrefSize(100,20);
         generateBillButton.setOnAction(e -> {
-            if (books1.size() > 0) {
+            if (!books1.isEmpty()) {
 // Call writeBill method of UtilityHelper class to write bill details into a file
                 writingToFiles.writeBill(String.valueOf(billId), totalPrice, books1);
                 // Show an information alert to the user that the bill has been generated
@@ -154,6 +154,8 @@ public class BillView extends BorderPane{
         quantityColumn.setCellFactory(cellFactory1);
 
         // Add all columns to the table
+
+
         table.getColumns().addAll(isbnColumn, titleColumn, categoryColumn, sellPriceColumn, quantityColumn);
         // Set the items of the table to books1
         table.setItems(books1);
