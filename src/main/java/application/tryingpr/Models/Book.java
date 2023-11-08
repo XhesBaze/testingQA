@@ -2,6 +2,8 @@ package application.tryingpr.Models;
 import java.time.LocalDate;
 
 public class Book {
+
+    public static final int MAX_NUM_OF_BOOKS = 200;
     private String isbn; // The ISBN of the book
     private String title; // The title of the book
     private double purchasePrice;
@@ -28,6 +30,9 @@ public class Book {
         this.purchaseDate = purchaseDate;
     }
 
+    public Book(String title){
+        this.title = title;
+    }
     // Getter method for ISBN
     public String getIsbn() {
         return isbn;

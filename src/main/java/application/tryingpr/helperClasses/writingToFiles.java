@@ -266,9 +266,13 @@ public class writingToFiles {
             if(fileCreated){
                 // Create a FileWriter instance to write the data to the file
                 FileWriter writer = new FileWriter(file);
+                int booksWritten = 0;
                 // Write each book's information to the file
                 for (Book book: Controller.books){
+                    if(booksWritten >= Book.MAX_NUM_OF_BOOKS)
+                        throw new RuntimeException("Maximum number of books exceeded.");
                     writer.write(book.toString() + "\n");
+                    booksWritten++;
 
                     // Close the FileWriter
                     writer.close();
