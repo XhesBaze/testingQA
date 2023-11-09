@@ -1,0 +1,5 @@
+Bill Id: 17
+Date: 09-11-2023
+1: ISBN: 9781428108325 ,Title: Pride and Prejudice ,Author: Jane Austin
+2: ISBN: 123-123-123 ,Title: Atlas of the Heart ,Author: Brene Brown
+Total: 347.97

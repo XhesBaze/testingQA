@@ -1,0 +1,7 @@
+Bill Id: 27
+Date: 10-11-2023
+1: ISBN: 9781428108325 ,Title: Pride and Prejudice ,Author: Jane Austin
+2: ISBN: 123-123-123 ,Title: Atlas of the Heart ,Author: Brene Brown
+3: ISBN: 123-123-123 ,Title: The Subtle Art of Not Giving a Fu*k ,Author: Mark Manson
+4: ISBN: 123-123-123 ,Title: The 48 Laws of Power ,Author: Robert Greene
+Total: 631.98

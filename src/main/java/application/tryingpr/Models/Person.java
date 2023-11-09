@@ -2,15 +2,18 @@ package application.tryingpr.Models;
 
 import application.tryingpr.helperClasses.Role;
 
-public abstract class Person {
+public class Person {
+
+    public static final int MAX_NUM_OF_PEOPLE = 300;
 
     private String name;
-    private final String birthday;
+
+    private String birthday = " ";
     private String phone;
 
     private int salary;
     private String userName;
-    private final String password;
+    private String password = " ";
     private Role role;
 
     public Person(String name, String userName, String password, String Birthday, int salary, String Phone,  Role role) {
@@ -21,6 +24,10 @@ public abstract class Person {
         this.birthday = Birthday;
         this.phone = Phone;
         this.salary = salary;
+    }
+
+    public Person(String name){
+        this.name = name;
     }
 
     public String getPhone() {

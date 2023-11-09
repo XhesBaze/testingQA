@@ -11,7 +11,7 @@ import application.tryingpr.helperClasses.writingToFiles;
 public class ControllerTest {
 
     @Test
-    public void testBooksCreation() {
+    public void testBooksListCreation() {
         ObservableList<Book> books = writingToFiles.getBooks();
         Assertions.assertNotNull(books);
     }
@@ -30,26 +30,23 @@ public class ControllerTest {
     }
 
     @Test
-    public void testFiveBooksList(){
-        ObservableList<Book> books = FXCollections.observableArrayList(
-                new Book("TestingBook2"),
-                new Book("TestingBook3"),
-                new Book("TestingBook4"),
-                new Book("TestingBook5"),
-                new Book("TestingBook6")
-        );
+    public void testAverageNumberOfBooksList(){
+        ObservableList<Book> books = FXCollections.observableArrayList();
+        for (int i = 1; i<=100 ; i++){
+            books.add(new Book("TestingBook" + i));
+        }
 
-        Assertions.assertEquals(5,books.size());
-        Assertions.assertEquals("TestingBook2",books.get(0).getTitle());
-        Assertions.assertEquals("TestingBook3",books.get(1).getTitle());
-        Assertions.assertEquals("TestingBook4",books.get(2).getTitle());
-        Assertions.assertEquals("TestingBook5",books.get(3).getTitle());
-        Assertions.assertEquals("TestingBook6",books.get(4).getTitle());
+        Assertions.assertEquals(100,books.size());
+        Assertions.assertEquals("TestingBook34",books.get(33).getTitle());
+        Assertions.assertEquals("TestingBook12",books.get(11).getTitle());
+        Assertions.assertEquals("TestingBook80",books.get(79).getTitle());
+        Assertions.assertEquals("TestingBook67",books.get(66).getTitle());
+        Assertions.assertEquals("TestingBook99",books.get(98).getTitle());
 
     }
 
     @Test
-    public void testMaximumOfBooksList(){
+    public void testMaximumNumberOfBooksList(){
         ObservableList<Book> books = FXCollections.observableArrayList();
         for (int i = 1; i<=200 ; i++){
             books.add(new Book("TestingBook" + i));
@@ -62,7 +59,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testExceedingNumOfBooksList(){
+    public void testExceedingNumberOfBooksList(){
 
         ObservableList<Book> books = FXCollections.observableArrayList();
 
@@ -74,7 +71,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testRuntimeExceptionExceedingNumOfBooksList() {
+    public void testRuntimeExceptionExceedingNumberOfBooksList() {
         Assertions.assertThrows(
                 RuntimeException.class,
                 () -> {
@@ -90,30 +87,91 @@ public class ControllerTest {
         );
     }
 
-
-
-
     @Test
-    public void testPeopleInitialization() {
+    public void testPeopleListCreation() {
         ObservableList<Person> people = writingToFiles.getPersons();
         Assertions.assertNotNull(people);
     }
 
     @Test
-    public void testTotalCostInitialization() {
+    public void testEmptyPeopleList() {
+        ObservableList<Person> people = FXCollections.observableArrayList();
+        Assertions.assertTrue(people.isEmpty());
+    }
+
+    @Test
+    public void testMaximumNumberOfPeopleList(){
+        ObservableList<Person> people = FXCollections.observableArrayList();
+        for (int i = 1; i<=300 ; i++){
+            people.add(new Person("TestingPerson" + i));
+        }
+
+        Assertions.assertEquals(300,people.size());
+
+        Assertions.assertEquals("TestingPerson299", people.get(298).getName());
+        Assertions.assertEquals("TestingPerson300",people.get(299).getName());
+    }
+
+    @Test
+    public void testExceedingNumberOfPeopleList(){
+
+        ObservableList<Person> people = FXCollections.observableArrayList();
+
+        for (int i = 1; i <= 301; i++) {
+            people.add(new Person("TestingPerson " + i));
+        }
+        Assertions.assertTrue(people.size() > 200);
+        Assertions.assertEquals(301,people.size());
+    }
+
+    @Test
+    public void testRandomNumberOfPeopleList(){
+        ObservableList<Person> people = FXCollections.observableArrayList();
+        for (int i = 1; i<=150 ; i++){
+            people.add(new Person("TestingPerson" + i));
+        }
+
+        Assertions.assertEquals(150,people.size());
+        Assertions.assertEquals("TestingPerson74",people.get(73).getName());
+        Assertions.assertEquals("TestingPerson125",people.get(124).getName());
+        Assertions.assertEquals("TestingPerson80",people.get(79).getName());
+        Assertions.assertEquals("TestingPerson149",people.get(148).getName());
+        Assertions.assertEquals("TestingPerson3",people.get(2).getName());
+
+    }
+
+    @Test
+    public void testRuntimeExceptionExceedingNumberOfPeopleList() {
+        Assertions.assertThrows(
+                RuntimeException.class,
+                () -> {
+                    ObservableList<Person> people = FXCollections.observableArrayList();
+                    for (int i = 1; i <= 301; i++) {
+                        if (i > 300) {
+                            throw new RuntimeException("Maximum number of people exceeded.");
+                        }
+                        people.add(new Person("TestingPerson " + i));
+                    }
+                },
+                "Maximum number of people exceeded."
+        );
+    }
+
+    @Test
+    public void testTotalCostListCreation() {
         double totalCost = writingToFiles.getTotalCost();
         Assertions.assertEquals(0.0, totalCost, 0.001);
     }
 
     @Test
-    public void testTotalBillInitialization() {
+    public void testTotalBillListCreation() {
         double totalBill = writingToFiles.getTotalBill();
-        Assertions.assertEquals(0.0, totalBill, 0.001);
+        Assertions.assertEquals(totalBill, 947.97);
 
     }
 
     @Test
-    public void testNumberOfBooksSoldInitialization() {
+    public void testNumberOfBooksSoldCreation() {
         int numberOfBooksSold = writingToFiles.getBooksSold();
         Assertions.assertTrue(numberOfBooksSold >= 0);
     }

@@ -1,0 +1,6 @@
+Bill Id: 21
+Date: 09-11-2023
+1: ISBN: 123-123-123 ,Title: The Subtle Art of Not Giving a Fu*k ,Author: Mark Manson
+2: ISBN: 123-123-123 ,Title: The Subtle Art of Not Giving a Fu*k ,Author: Mark Manson
+3: ISBN: 123-123-123 ,Title: The 48 Laws of Power ,Author: Robert Greene
+Total: 600.0

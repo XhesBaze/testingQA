@@ -11,7 +11,7 @@ public class Controller {
     // ObservableList to store the books data
     public static ObservableList<Book> books = writingToFiles.getBooks();
 
-    // ObservableList to store the persons data
+    // ObservableList to store the people data
     public static ObservableList<Person> people = writingToFiles.getPersons();
 
     // Total cost of books

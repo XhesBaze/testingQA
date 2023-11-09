@@ -1,4 +1,0 @@
-Xhesi,DatePicker@4a0fe972[styleClass=combo-box-base date-picker],+355685149749,5000,xhbaze,12345678,Manager
-emma,DatePicker@72f227ca[styleClass=combo-box-base date-picker],+355 123 45  67 533,690,emma,12345678,Librarian,0.0
-antea,DatePicker@40b0592a[styleClass=combo-box-base date-picker],+355 67 67 86 975,5684,antea,12345678,Manager
-1,DatePicker@fcaf0fd[styleClass=combo-box-base date-picker],+351111111,1,1,12345678,Librarian,0.0

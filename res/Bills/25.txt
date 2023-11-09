@@ -1,0 +1,4 @@
+Bill Id: 25
+Date: 09-11-2023
+1: ISBN: 123-123-123 ,Title: The 48 Laws of Power ,Author: Robert Greene
+Total: 300.0
