@@ -3,6 +3,7 @@ package BoundaryValueTesting;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import application.tryingpr.Models.Book;
 import application.tryingpr.Models.Person;
@@ -11,26 +12,26 @@ import application.tryingpr.helperClasses.writingToFiles;
 public class ControllerTest {
 
     @Test
-    public void testBooksListCreation() {
+    public void test_BooksListCreation() {
         ObservableList<Book> books = writingToFiles.getBooks();
         Assertions.assertNotNull(books);
     }
 
     @Test
-    public void testEmptyBooksList() {
+    public void test_EmptyBooksList() {
         ObservableList<Book> books = FXCollections.observableArrayList();
         Assertions.assertTrue(books.isEmpty());
     }
 
     @Test
-    public void testOneBookList() {
+    public void test_OneBookList() {
         ObservableList<Book> book = FXCollections.observableArrayList(new Book("TestingBookTitle"));
         Assertions.assertEquals(1, book.size());
         Assertions.assertEquals("TestingBookTitle", book.get(0).getTitle());
     }
 
     @Test
-    public void testAverageNumberOfBooksList(){
+    public void test_AverageNumberOfBooksList(){
         ObservableList<Book> books = FXCollections.observableArrayList();
         for (int i = 1; i<=100 ; i++){
             books.add(new Book("TestingBook" + i));
@@ -46,7 +47,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testMaximumNumberOfBooksList(){
+    public void test_MaximumNumberOfBooksList(){
         ObservableList<Book> books = FXCollections.observableArrayList();
         for (int i = 1; i<=200 ; i++){
             books.add(new Book("TestingBook" + i));
@@ -59,7 +60,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testExceedingNumberOfBooksList(){
+    public void test_ExceedingNumberOfBooksList(){
 
         ObservableList<Book> books = FXCollections.observableArrayList();
 
@@ -71,7 +72,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testRuntimeExceptionExceedingNumberOfBooksList() {
+    public void test_RuntimeExceptionExceedingNumberOfBooksList() {
         Assertions.assertThrows(
                 RuntimeException.class,
                 () -> {
@@ -88,19 +89,19 @@ public class ControllerTest {
     }
 
     @Test
-    public void testPeopleListCreation() {
+    public void test_PeopleListCreation() {
         ObservableList<Person> people = writingToFiles.getPersons();
         Assertions.assertNotNull(people);
     }
 
     @Test
-    public void testEmptyPeopleList() {
+    public void test_EmptyPeopleList() {
         ObservableList<Person> people = FXCollections.observableArrayList();
         Assertions.assertTrue(people.isEmpty());
     }
 
     @Test
-    public void testMaximumNumberOfPeopleList(){
+    public void test_MaximumNumberOfPeopleList(){
         ObservableList<Person> people = FXCollections.observableArrayList();
         for (int i = 1; i<=300 ; i++){
             people.add(new Person("TestingPerson" + i));
@@ -113,7 +114,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testExceedingNumberOfPeopleList(){
+    public void test_ExceedingNumberOfPeopleList(){
 
         ObservableList<Person> people = FXCollections.observableArrayList();
 
@@ -125,7 +126,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testRandomNumberOfPeopleList(){
+    public void test_RandomNumberOfPeopleList(){
         ObservableList<Person> people = FXCollections.observableArrayList();
         for (int i = 1; i<=150 ; i++){
             people.add(new Person("TestingPerson" + i));
@@ -141,7 +142,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testRuntimeExceptionExceedingNumberOfPeopleList() {
+    public void test_RuntimeExceptionExceedingNumberOfPeopleList() {
         Assertions.assertThrows(
                 RuntimeException.class,
                 () -> {
@@ -157,21 +158,38 @@ public class ControllerTest {
         );
     }
 
+    @BeforeEach
+    public void setUp() {
+
+        clearTotalCost();
+        initializeTotalBill();
+    }
+
     @Test
-    public void testTotalCostListCreation() {
+    public void test_TotalCostListCreation() {
         double totalCost = writingToFiles.getTotalCost();
         Assertions.assertEquals(0.0, totalCost, 0.001);
     }
 
     @Test
-    public void testTotalBillListCreation() {
+    public void test_TotalBillListCreation() {
         double totalBill = writingToFiles.getTotalBill();
-        Assertions.assertEquals(totalBill, 947.97);
+        Assertions.assertEquals(947.97, totalBill, 0.001);
+    }
 
+
+    private void clearTotalCost() {
+
+        writingToFiles.writeTotalCost(0.0);
+    }
+
+
+    private void initializeTotalBill() {
+        writingToFiles.writeTotalBill(947.97);
     }
 
     @Test
-    public void testNumberOfBooksSoldCreation() {
+    public void test_NumberOfBooksSoldCreation() {
         int numberOfBooksSold = writingToFiles.getBooksSold();
         Assertions.assertTrue(numberOfBooksSold >= 0);
     }
