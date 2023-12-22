@@ -16,6 +16,9 @@ public class Book {
     private LocalDate purchaseDate; // The date when the book was purchased
 
 
+    public Book(){
+
+    }
     // A constructor with all attributes of the book
     public Book(String isbn, String title, double purchasePrice, double originalPrice, double sellPrice, String author, String category, String supplier, int stock, LocalDate purchaseDate) {
         this.isbn = isbn;
