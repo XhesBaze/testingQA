@@ -9,10 +9,10 @@ import application.tryingpr.helperClasses.writingToFiles;
 public class Controller {
 
     // ObservableList to store the books data
-    public static ObservableList<Book> books = writingToFiles.getBooks();
+    public static ObservableList<Book> books = writingToFiles.getBooks("res/BOOKS.txt");
 
     // ObservableList to store the people data
-    public static ObservableList<Person> people = writingToFiles.getPersons();
+    public static ObservableList<Person> people = writingToFiles.getPersons("res/PERSONS.txt");
 
     // Total cost of books
     public static double totalCost = writingToFiles.getTotalCost();

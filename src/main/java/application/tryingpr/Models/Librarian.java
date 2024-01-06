@@ -7,20 +7,29 @@ public class Librarian extends Person {
     // private variable to store the total amount billed by the librarian
     private double totalBilled;
 
+    public Librarian(String userName, String password, Role role){
+        super(userName,password,role);
+    }
+
     // constructor with 7 parameters
     public Librarian(String name, String userName, String password, String Birthday, int salary, String Phone, Role role) {
+
         // calling the constructor of the super class (Person) with 7 parameters
         super(name, userName, password, Birthday, salary, Phone, role);
+
         // initializing the totalBilled with 0
         this.totalBilled = 0;
+
     }
 
     // constructor with 8 parameters
     public Librarian(String name, String userName, String password, String Birthday, int salary, String Phone, Role role, double totalBilled) {
         // calling the constructor of the super class (Person) with 7 parameters
         super(name, userName, password, Birthday, salary, Phone, role);
+
         // setting the totalBilled with the provided value
         this.totalBilled = totalBilled;
+
     }
 
     // getter method for totalBilled
@@ -31,7 +40,9 @@ public class Librarian extends Person {
 
     // setter method for totalBilled
     public void setTotalBilled(double totalBilled) {
-        // setting the value of totalBilled with the provided value
+        if (totalBilled < 0) {
+            throw new IllegalArgumentException("Total billed amount cannot be negative.");
+        }
         this.totalBilled = totalBilled;
     }
 
