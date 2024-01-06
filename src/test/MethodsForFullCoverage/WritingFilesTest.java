@@ -2,7 +2,6 @@ package MethodsForFullCoverage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import application.tryingpr.Models.Administrator;
 import application.tryingpr.Models.Book;
 import application.tryingpr.Models.Manager;
 import application.tryingpr.Models.Person;
@@ -94,5 +93,4 @@ public class WritingFilesTest {
             System.out.println(people.size());
         });
     }
-
 }

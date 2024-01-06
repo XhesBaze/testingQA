@@ -398,6 +398,9 @@ public class writingToFiles {
             }
 
             OutputStream outputStream = createFileOutputStream(file);
+            if (outputStream == null) {
+                throw new IOException("Failed to create the output stream");
+            }
 
             DataOutputStream dos = new DataOutputStream(outputStream);
             dos.writeInt(quantity);

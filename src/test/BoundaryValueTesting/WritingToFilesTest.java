@@ -449,6 +449,14 @@ public class WritingToFilesTest {
         Controller.people.clear();
     }
 
+    @Test
+    public void test_writePersons_noPerson(){
+        writingToFiles.writePersons();
+
+        File file = new File("res/PEOPLE1.txt");
+        assertTrue(file.exists());
+        assertEquals(0, file.length());
+    }
 
     @Test
     public void test_writePersons_onePerson(){
