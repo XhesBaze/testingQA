@@ -51,43 +51,41 @@ class WritingToFilesMockTest {
 
     @Test
     void testWriteBill() {
-        // Mock the FileWriterFactory
+    
         FileWriterFactory fileWriterFactoryMock = mock(FileWriterFactory.class);
 
-        // Mock the FileWriter class
+   
         FileWriter fileWriterMock = mock(FileWriter.class);
 
-        // Mock the File class
+       
         File fileMock = mock(File.class);
         when(fileMock.exists()).thenReturn(false);
 
-        // Mock the Calendar class
         Calendar calendarMock = mock(Calendar.class);
         when(calendarMock.getTime()).thenReturn(Calendar.getInstance().getTime());
 
-        // Create sample data for testing
         String billId = "123";
         double totalBill = 100.0;
         ObservableList<Book> books = FXCollections.observableArrayList();
         books.add(new Book("Book1", "Author1", 10.0, 200, 150, "Genre1", "Description1", "Publisher1", 5, LocalDate.parse("2023-01-01")));
 
         try {
-            // Mock file creation behavior
+          
             when(fileMock.createNewFile()).thenReturn(true);
 
-            // Mock FileWriterFactory behavior
+      
             when(FileWriterFactory.create(fileMock)).thenReturn(fileWriterMock);
 
-            // Call the method under test
+      
             writingToFiles.writeBill(billId, totalBill, books, fileWriterFactoryMock);
 
-            // Verify the interactions with FileWriter
+        
             verify(fileWriterMock).write("Bill Id: " + billId);
             verify(fileWriterMock).write("\n1: Book1 by Author1 - $10.0");
             verify(fileWriterMock).write("\nTotal: " + totalBill);
             verify(fileWriterMock).close();
         } catch (IOException | RuntimeException e) {
-            // Handle exceptions or re-throw if necessary
+          
             e.printStackTrace();
         }
     }
@@ -95,7 +93,7 @@ class WritingToFilesMockTest {
 
     @Test
     public void testWriteRolesIOException() {
-        // Create a temporary directory to simulate an invalid file path
+      
         File tempDir;
         try {
             tempDir = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -105,11 +103,10 @@ class WritingToFilesMockTest {
             throw new RuntimeException("Unable to create temporary directory", e);
         }
 
-        // Call the method with the invalid file path
+   
         String invalidFilePath = tempDir.getAbsolutePath();
         Assertions.assertThrows(RuntimeException.class, () -> writingToFiles.writeRoles(invalidFilePath));
 
-        // Cleanup: Delete the temporary directory
         tempDir.delete();
     }
 }
