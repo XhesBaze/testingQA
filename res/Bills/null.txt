@@ -1,0 +1,6 @@
+Bill Id: null
+Date: 13-01-2024
+1: ISBN: null ,Title: The Great Gatsby ,Author: null
+2: ISBN: null ,Title: To Kill a Mockingbird ,Author: null
+3: ISBN: null ,Title: Harry Potter and the Sorcerer's Stone ,Author: null
+Total: 50.0

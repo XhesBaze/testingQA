@@ -9,11 +9,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.nio.file.Path;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -56,10 +52,8 @@ public class writingToFiles {
                     return data[2];
                 }
             }
-            // Return null if no match is found
             return null;
         } catch (FileNotFoundException fileNotFoundEx) {
-            // Return null if an exception is thrown while reading the file
             throw new RuntimeException("File not found", fileNotFoundEx);
         }
     }
@@ -80,7 +74,7 @@ public class writingToFiles {
         return objects.stream().map(serializer).toList();
     }
 
-    public static void writeRoles(String filePath) {
+    public static void writeRoles(String filePath) throws IOException{
         File file = new File(filePath);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -91,12 +85,10 @@ public class writingToFiles {
             }
 
             writer.flush();
-        } catch (IOException exception) {
-            throw new RuntimeException("An error occurred while writing roles", exception);
         }
     }
 
-    public static ObservableList<Book> getBooks(String filePath) {
+    public static ObservableList<Book> getBooks(String filePath){
         ObservableList<Book> books = FXCollections.observableArrayList();
 
         File file = new File(filePath);
@@ -113,10 +105,9 @@ public class writingToFiles {
                         data[5], data[6], data[7], Integer.parseInt(data[8]),
                         LocalDate.parse(data[9])));
             }
-        } catch (IOException | NumberFormatException | DateTimeParseException e) {
-            throw new RuntimeException("Error reading file: " + filePath, e);
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: File not found - " + filePath);
         }
-
         return books;
     }
 
@@ -125,35 +116,56 @@ public class writingToFiles {
         File file = new File(filePath);
 
         try {
-            if (!file.exists()) {
-                throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
+            if (!file.isFile() || !file.canRead()) {
+                throw new FileNotFoundException("Invalid or unreadable file: " + file.getAbsolutePath());
             }
+
+            int invalidDataLines = 0;
+
+            Map<String, Role> roleMap = Map.of(
+                    "librarian", Role.Librarian,
+                    "manager", Role.Manager,
+                    "administrator", Role.Administrator
+            );
 
             try (Scanner scanner = new Scanner(file)) {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
-
                     String[] data = line.split(",");
-                    if (data.length >= 7) {
-                        if (data[6].equalsIgnoreCase("Librarian")) {
-                            people.add(new Librarian(data[0], data[4], data[5], data[1],
-                                    Integer.parseInt(data[3]), data[2], Role.Librarian, (data.length >= 8) ? Double.parseDouble(data[7]) : 0.0));
-                        } else if (data[6].equalsIgnoreCase("Manager")) {
-                            people.add(new Manager(data[0], data[4], data[5], data[1],
-                                    Integer.parseInt(data[3]), data[2], Role.Manager));
-                        } else if (data[6].equalsIgnoreCase("Administrator")) {
-                            people.add(new Administrator(data[0], data[4], data[5], data[1],
-                                    Integer.parseInt(data[3]), data[2], Role.Administrator));
+
+                    if (data.length >= 7 && roleMap.containsKey(data[6].trim().toLowerCase())) {
+                        Role role = roleMap.get(data[6].trim().toLowerCase());
+
+                        switch (role) {
+                            case Librarian:
+                                people.add(new Librarian(data[0], data[4], data[5], data[1],
+                                        Integer.parseInt(data[3]), data[2], Role.Librarian, (data.length >= 8) ? Double.parseDouble(data[7]) : 0.0));
+                                break;
+                            case Manager:
+                                people.add(new Manager(data[0], data[4], data[5], data[1],
+                                        Integer.parseInt(data[3]), data[2], Role.Manager));
+                                break;
+                            case Administrator:
+                                people.add(new Administrator(data[0], data[4], data[5], data[1],
+                                        Integer.parseInt(data[3]), data[2], Role.Administrator));
+                                break;
                         }
+                    } else {
+                        System.out.println("Warning: " + (data.length < 7 ? "Invalid data format" : "Unrecognized role") + " in line: " + line);
+                        invalidDataLines++;
                     }
                 }
             }
+
+            System.out.println("Skipped " + invalidDataLines + " lines with invalid data.");
+
         } catch (IOException e) {
             throw new RuntimeException("Error reading file: " + file.getAbsolutePath(), e);
         }
 
         return people;
     }
+
 
     public static String getNumberOfLibrarians(){
         // retrieve list of people from the BooksPersonsController
@@ -185,19 +197,15 @@ public class writingToFiles {
         return String.valueOf(numberOfManagers);
     }
 
-    public static int getNumberOfBills(){
-        File file = new File("res/Bills");
-        File testing_file = new File("res/TestingBills");
+    public static int getNumberOfBills(String directoryPath){
+        File file = new File(directoryPath);
         if (file.exists() ) {
              return Objects.requireNonNull(file.listFiles()).length;
-        }
-        if (testing_file.exists() ) {
-            return Objects.requireNonNull(testing_file.listFiles()).length;
         }
         return 0;
     }
 
-    public static void writeBill(String billId, double totalBill, ObservableList<Book> books, FileWriterFactory fileWriterFactoryMock){
+    public static void writeBill(String billId, double totalBill, ObservableList<Book> books, FileWriterFactory fileWriterFactoryMock) {
         // Create a File object representing the bill file
         File file = new File("res/Bills/" + billId + ".txt");
         // Get the current date and time
@@ -241,36 +249,35 @@ public class writingToFiles {
         }
     }
 
-    public static double getTotalBill(){
-        File file = new File("res/totalBill1.bin"); // Create a file object with the file path "res/totalBill.bin"
-        if (file.exists()) { // Check if the file exists
-            try (FileInputStream fis = new FileInputStream(file); // Create a FileInputStream object
-                 DataInputStream dis = new DataInputStream(fis)) { // Wrap the FileInputStream object with a DataInputStream object
-                return dis.readDouble(); // Read the double value from the DataInputStream object
-            } catch (IOException e) { // Catch the IOException in case of any error
-                return 0; // Return 0 if an error occurs
+    public static double getTotalBill(String filePath) {
+        File file = new File(filePath);
+
+        if (file.exists()) {
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+                return dis.readDouble();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Error reading file: " + filePath, e);
             }
         }
-        return 0; // Return 0 if the file does not exist
+        return 0;
     }
 
-    public static double getTotalCost(){
+    public static double getTotalCost(String filePath) {
+        File file = new File(filePath);
 
-        File file = new File("res/totalCost1.bin"); // Create a file object with the file path "res/totalCost.bin"
-        if (file.exists()) { // Check if the file exists
-            try (FileInputStream fis = new FileInputStream(file); // Create a FileInputStream object
-                 DataInputStream dis = new DataInputStream(fis)) { // Wrap the FileInputStream object with a DataInputStream object
-                return dis.readDouble(); // Read the double value from the DataInputStream object
-            } catch (IOException e) { // Catch the IOException in case of any error
-                return 0; // Return 0 if an error occurs
+        if (file.exists()) {
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+                return dis.readDouble();
+            } catch (IOException e) {
+               return 0;
             }
         }
         return 0;
     }
 
 
-    public static int getBooksSold(){
-        File file = new File("res/booksSold1.bin");
+    public static int getBooksSold(String filePath){
+        File file = new File(filePath);
         if (file.exists()) {
             try (FileInputStream fis = new FileInputStream(file);
                  DataInputStream dis = new DataInputStream(fis)) {
@@ -283,124 +290,60 @@ public class writingToFiles {
     }
 
 
-    public static void writeBooks() {
+    public static void writeBooks(String filePath) throws IOException {
+        File file = new File(filePath);
 
-
-        // Create the file "res/books.txt"
-        File file = new File("res/BOOKS.txt");
-        try {
-            if (!file.exists()) {
-                boolean fileCreated = file.createNewFile();
-                if (!fileCreated) {
-                    throw new IOException("Failed to create the file.");
+        try (FileWriter writer = new FileWriter(file)) {
+            int booksWritten = 0;
+            for (Book book : Controller.books) {
+                if (booksWritten >= Book.MAX_NUM_OF_BOOKS) {
+                    throw new RuntimeException("Maximum number of books exceeded.");
                 }
+                writer.write(book.toString() + "\n");
+                booksWritten++;
             }
 
-            // Open the FileWriter outside the if block to avoid scope issues
-            try (FileWriter writer = new FileWriter(file)) {
-                int booksWritten = 0;
-                // Write each book's information to the file
-                for (Book book : Controller.books) {
-                    if (booksWritten >= Book.MAX_NUM_OF_BOOKS) {
-                        throw new RuntimeException("Maximum number of books exceeded.");
-                    }
-                    writer.write(book.toString() + "\n");
-                    booksWritten++;
+        }
+    }
+
+    public static void writePersons(String filePath) throws IOException {
+        File file = new File(filePath);
+
+        try (FileWriter writer = new FileWriter(file)) {
+            int peopleWritten = 0;
+            for (Person person : Controller.people) {
+                if (peopleWritten >= Person.MAX_NUM_OF_PERSONS) {
+                    throw new IOException("Maximum number of people exceeded.");
                 }
+                writer.write(person.toString() + "\n");
+                peopleWritten++;
             }
 
         } catch (IOException e) {
-            // In case of IOException, throw a new RuntimeException with the caught exception
-            throw new RuntimeException(e);
+            throw new IOException("Error while writing persons to file", e);
         }
     }
 
 
-    public static void writePersons() {
-
-
-        // Create the file "res/books.txt"
-        File file = new File("res/PEOPLE1.txt");
-        try {
-            if (!file.exists()) {
-                boolean fileCreated = file.createNewFile();
-                if (!fileCreated) {
-                    throw new IOException("Failed to create the file.");
-                }
-            }
-
-            // Open the FileWriter outside the if block to avoid scope issues
-            try (FileWriter writer = new FileWriter(file)) {
-                int peopleWritten = 0;
-                // Write each book's information to the file
-                for (Person person : Controller.people) {
-                    if (peopleWritten >= Person.MAX_NUM_OF_PERSONS) {
-                        throw new RuntimeException("Maximum number of people exceeded.");
-                    }
-                    writer.write(person.toString() + "\n");
-                    peopleWritten++;
-                }
-            }
-
-        } catch (IOException e) {
-            // In case of IOException, throw a new RuntimeException with the caught exception
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void writeTotalBill(double total) {
-        File file = new File("res/totalBill1.bin");
-        try {
-            if (!file.exists()) {
-                boolean fileCreated = file.createNewFile();
-                if (!fileCreated) {
-                    throw new IOException("Failed to create the file.");
-                }
-            }
-
-            FileOutputStream fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(fos);
+    public static void writeTotalBill(String filePath, double total) throws IOException{
+        File file = new File(filePath);
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
             dos.writeDouble(total);
-            dos.close();
-            fos.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public static void writeTotalCost(double total) {
-        File file = new File("res/totalCost1.bin");
-        try {
-            if (!file.exists()) {
-                boolean fileCreated = file.createNewFile();
-                if (!fileCreated) {
-                    throw new IOException("Failed to create the file.");
-                }
-            }
-
-            FileOutputStream fos = new FileOutputStream(file);
-            DataOutputStream dos = new DataOutputStream(fos);
+    public static void writeTotalCost(String filePath, double total) throws IOException {
+        File file = new File(filePath);
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
             dos.writeDouble(total);
-            dos.close();
-            fos.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public static void writeBooksSold(int quantity) {
+    public static void writeBooksSold(String filePath,int quantity) {
         try {
-            File file = new File("res/booksSold1.bin");
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    throw new IOException("Failed to create the file");
-                }
-            }
+            File file = new File(filePath);
 
             OutputStream outputStream = createFileOutputStream(file);
-            if (outputStream == null) {
-                throw new IOException("Failed to create the output stream");
-            }
 
             DataOutputStream dos = new DataOutputStream(outputStream);
             dos.writeInt(quantity);

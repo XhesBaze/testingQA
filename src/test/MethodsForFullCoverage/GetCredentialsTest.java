@@ -1,5 +1,5 @@
-package MethodsForFullCoverage;
 
+package MethodsForFullCoverage;
 import application.tryingpr.helperClasses.writingToFiles;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,0 +1,2 @@
+xhesi,xhbaze,password,5000,0691212123,Manager
+antea,atoska,password,5000,0691212123,Administrator

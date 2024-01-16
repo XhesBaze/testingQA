@@ -461,7 +461,7 @@ public class AdminPanel extends BorderPane {
         managersValue.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
         Label bill = new Label("Total Income: ");
         bill.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
-        Label billValue = new Label(String.valueOf(writingToFiles.getTotalBill()));
+        Label billValue = new Label(String.valueOf(writingToFiles.getTotalBill("res/totalBill1.bin")));
         billValue.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
 
         // Add the labels to the grid

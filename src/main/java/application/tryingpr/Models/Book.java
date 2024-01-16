@@ -65,11 +65,9 @@ public class Book {
     public String getCategory() {
         return category;
     }
-
     public void setCategory(String category) {
         this.category = category;
     }
-
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
@@ -77,7 +75,6 @@ public class Book {
     public void setTitle(String title) {
         this.title = title;
     }
-
     public void setPurchasePrice(double purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
@@ -85,11 +82,9 @@ public class Book {
     public double getOriginalPrice() {
         return originalPrice;
     }
-
     public void setOriginalPrice(double originalPrice) {
         this.originalPrice = originalPrice;
     }
-
     public void setSellPrice(double sellPrice) {
         this.sellPrice = sellPrice;
     }
@@ -97,15 +92,12 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-
     public String getSupplier() {
         return supplier;
     }
-
     public void setSupplier(String supplier) {
         this.supplier = supplier;
     }
-
     public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
@@ -113,7 +105,6 @@ public class Book {
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
-
     @Override
     public String toString() {
         return this.isbn + "," + this.title + "," + this.purchasePrice +
@@ -131,9 +122,7 @@ public class Book {
     public int getStock() {
         return stock;
     }
-
     public void setStock(int stock) {
         this.stock = stock;
     }
-
 }

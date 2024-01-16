@@ -63,6 +63,34 @@
             <version>19-ea+7</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.17</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -76,6 +104,37 @@
                     <target>19</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.7.3</version>
+                <configuration>
+                    <targetClasses>
+                        <!-- Specify the classes you want to include for mutation testing -->
+                        <param>application.tryingpr.Controllers.Controller</param>
+                        <param>application.tryingpr.helperClasses.writingToFiles</param>
+                        <param>application.tryingpr.helperClasses.Role</param>
+                        <param>application.tryingpr.helperClasses.FileWriterFactory</param>
+                        <param>application.tryingpr.Models.Administrator</param>
+                        <param>application.tryingpr.Models.Bill</param>
+                        <param>application.tryingpr.Models.Book</param>
+                        <param>application.tryingpr.Models.Librarian</param>
+                        <param>application.tryingpr.Models.Manager</param>
+                        <param>application.tryingpr.Models.Person</param>
+                    </targetClasses>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>mutation-test</id>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>

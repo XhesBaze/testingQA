@@ -1,0 +1,5 @@
+ISBN1,Book1,15.00,10.00,25.00,Author1,Category1,Supplier1,5,2023-04-05
+ISBN2,Book2,16.00,11.00,26.00,Author2,Category2,Supplier2,6,2023-05-05
+ISBN3,Book3,17.00,12.00,27.00,Author3,Category3,Supplier3,7,2023-04-06
+ISBN4,Book4,18.00,13.00,28.00,Author4,Category4,Supplier4,8,2023-04-11
+ISBN5,Book5,19.00,14.00,29.00,Author5,Category5,Supplier5,9,2023-04-05

@@ -322,7 +322,7 @@ public class WritingToFilesTest {
         assertTrue(file1.createNewFile());
         assertTrue(file2.createNewFile());
 
-        int result = writingToFiles.getNumberOfBills();
+        int result = writingToFiles.getNumberOfBills("res/Bills");
 
 
         int expected = Objects.requireNonNull(billsFolder.listFiles()).length;
@@ -404,7 +404,11 @@ public class WritingToFilesTest {
 }
     @Test
     public void test_writeBooks_noBooks(){
-        writingToFiles.writeBooks();
+        try {
+            writingToFiles.writeBooks("res/bookInfo.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -412,7 +416,7 @@ public class WritingToFilesTest {
         Controller.books.add(new Book("ISBN1"," TITLE1", 25.0, 20.0,30.0,"AUTHOR1","CATEGORY1","SUPPLIER1",10,LocalDate.parse("2022-03-03")));
 
         try{
-            writingToFiles.writeBooks();
+            writingToFiles.writeBooks("res/bookInfo.txt");
         }catch(Exception e){
             fail("Exception: "+e.getMessage());
         }
@@ -428,7 +432,7 @@ public class WritingToFilesTest {
         }
 
         try{
-            writingToFiles.writeBooks();
+            writingToFiles.writeBooks("res/bookInfo.txt");
         }catch(Exception e){
             fail("Exception:"+ e.getMessage());
         }
@@ -441,7 +445,7 @@ public class WritingToFilesTest {
             Controller.books.add(new Book("ISBN", "TITLE", 25.0, 20.0, 30.0, "AUTHOR", "CATEGORY", "SUPPLIER", 10, LocalDate.parse("2022-03-03")));
         }
 
-        assertThrows(RuntimeException.class, writingToFiles::writeBooks);
+        assertThrows(RuntimeException.class, () -> writingToFiles.writeBooks("res/bookInfo.txt"));
     }
 
     @BeforeEach
@@ -451,7 +455,11 @@ public class WritingToFilesTest {
 
     @Test
     public void test_writePersons_noPerson(){
-        writingToFiles.writePersons();
+        try {
+            writingToFiles.writePersons("res/PEOPLE1.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         File file = new File("res/PEOPLE1.txt");
         assertTrue(file.exists());
@@ -463,7 +471,7 @@ public class WritingToFilesTest {
         Controller.people.add(new Person("Xhesi","Baze",Role.Administrator));
 
         try{
-            writingToFiles.writePersons();
+            writingToFiles.writePersons("res/PEOPLE1.txt");
         }catch(Exception e){
             fail("Exception: "+e.getMessage());
         }
@@ -476,7 +484,7 @@ public class WritingToFilesTest {
         }
 
         try{
-            writingToFiles.writePersons();
+            writingToFiles.writePersons("res/PEOPLE1.txt");
         }catch(Exception e){
             fail("Exception:"+e.getMessage());
         }
@@ -490,7 +498,9 @@ public class WritingToFilesTest {
             Controller.people.add(new Person("Username","Password",Role.Librarian));
         }
 
-        assertThrows(RuntimeException.class, writingToFiles::writePersons);
+        String testFilePath = "res/PEOPLE1.txt";
+
+        assertThrows(IOException.class, () -> writingToFiles.writePersons(testFilePath));
     }
 
     @Test
@@ -498,7 +508,7 @@ public class WritingToFilesTest {
         double total = 0.0;
 
         try{
-            writingToFiles.writeTotalBill(total);
+            writingToFiles.writeTotalBill("res/totalBill1.bin",total);
         }catch(Exception e){
             fail("Exception: " + e.getMessage());
         }
@@ -510,7 +520,7 @@ public class WritingToFilesTest {
         double total = 50000;
 
         try{
-            writingToFiles.writeTotalBill(total);
+            writingToFiles.writeTotalBill("res/totalBill1.bin",total);
         }catch(Exception e){
             fail("Exception: " + e.getMessage());
         }
@@ -521,7 +531,7 @@ public class WritingToFilesTest {
         double total = 0.0;
 
         try{
-            writingToFiles.writeTotalCost(total);
+            writingToFiles.writeTotalCost("res/totalCost1.bin",total);
         }catch(Exception e){
             fail("Exception: " + e.getMessage());
         }
@@ -533,7 +543,7 @@ public class WritingToFilesTest {
         double total = 50000;
 
         try{
-            writingToFiles.writeTotalCost(total);
+            writingToFiles.writeTotalCost("res/totalCost1.bin",total);
         }catch(Exception e){
             fail("Exception: " + e.getMessage());
         }
@@ -545,7 +555,7 @@ public class WritingToFilesTest {
         int quantity = 1;
 
         try {
-            writingToFiles.writeBooksSold(quantity);
+            writingToFiles.writeBooksSold("res/booksSold1.bin",quantity);
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
         }
@@ -558,7 +568,7 @@ public class WritingToFilesTest {
         int quantity = 0;
 
         try {
-            writingToFiles.writeBooksSold(quantity);
+            writingToFiles.writeBooksSold("res/booksSold1.bin",quantity);
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
         }
@@ -571,7 +581,7 @@ public class WritingToFilesTest {
         int quantity = 100;
 
         try {
-            writingToFiles.writeBooksSold(quantity);
+            writingToFiles.writeBooksSold("res/booksSold1.bin",quantity);
         } catch (Exception e) {
             fail("Unexpected exception: " + e.getMessage());
         }

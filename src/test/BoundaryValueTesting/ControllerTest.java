@@ -9,11 +9,15 @@ import application.tryingpr.Models.Book;
 import application.tryingpr.Models.Person;
 import application.tryingpr.helperClasses.writingToFiles;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class ControllerTest {
 
     @Test
-    public void test_BooksListCreation() {
-        ObservableList<Book> books = writingToFiles.getBooks("res/BOOKS.txt");
+    public void test_BooksListCreation() throws FileNotFoundException {
+        ObservableList<Book> books;
+        books = writingToFiles.getBooks("res/bookInfo.txt");
         Assertions.assertNotNull(books);
     }
 
@@ -167,30 +171,38 @@ public class ControllerTest {
 
     @Test
     public void test_TotalCostListCreation() {
-        double totalCost = writingToFiles.getTotalCost();
+        double totalCost = writingToFiles.getTotalCost("res/totalCost1.bin");
         Assertions.assertEquals(0.0, totalCost, 0.001);
     }
 
     @Test
     public void test_TotalBillListCreation() {
-        double totalBill = writingToFiles.getTotalBill();
+        double totalBill = writingToFiles.getTotalBill("res/totalBill1.bin");
         Assertions.assertEquals(947.97, totalBill, 0.001);
     }
 
 
     private void clearTotalCost() {
 
-        writingToFiles.writeTotalCost(0.0);
+        try {
+            writingToFiles.writeTotalCost("res/totalCost1.bin",0.0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
     private void initializeTotalBill() {
-        writingToFiles.writeTotalBill(947.97);
+        try {
+            writingToFiles.writeTotalBill("res/totalBill1.bin",947.97);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     public void test_NumberOfBooksSoldCreation() {
-        int numberOfBooksSold = writingToFiles.getBooksSold();
+        int numberOfBooksSold = writingToFiles.getBooksSold("res/booksSold1.bin");
         Assertions.assertTrue(numberOfBooksSold >= 0);
     }
 

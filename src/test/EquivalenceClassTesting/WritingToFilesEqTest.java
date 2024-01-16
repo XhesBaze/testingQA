@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import application.tryingpr.helperClasses.writingToFiles;
 
+import java.io.FileNotFoundException;
+
 
 public class WritingToFilesEqTest {
     @Test
@@ -110,9 +112,10 @@ public class WritingToFilesEqTest {
     }
 
     @Test
-    public void test_getBooks_ValidFileWithBooks() {
+    public void test_getBooks_ValidFileWithBooks() throws FileNotFoundException {
 
-        ObservableList<Book> books = writingToFiles.getBooks("res/BOOKS.txt");
+        ObservableList<Book> books;
+        books = writingToFiles.getBooks("res/bookInfo.txt");
         Assertions.assertNotNull(books);
         Assertions.assertTrue(books.isEmpty());
 

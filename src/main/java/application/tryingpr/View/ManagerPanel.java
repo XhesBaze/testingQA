@@ -29,6 +29,12 @@ import application.tryingpr.helperClasses.writingToFiles;
 
 @SuppressWarnings("ALL")
 public class ManagerPanel extends BorderPane {
+
+    public TableView<Librarian> getStatsPanelTableView(ObservableList<Librarian> librarians) {
+        VBox statsPanelVBox = statsPanel(librarians);
+        return (TableView<Librarian>) statsPanelVBox.getChildren().get(1); // Assuming TableView is the second child
+    }
+
     MenuBar bar;
     public BooksView view = new BooksView(Controller.books);
     Background background;
@@ -102,6 +108,7 @@ public class ManagerPanel extends BorderPane {
         GridPane.setConstraints(isbnLabel, 0, 0);
 
         TextField isbnInput = new TextField();
+        isbnInput.setId("isbnInput");
         GridPane.setConstraints(isbnInput, 1, 0);
 
         // Title of the book
@@ -234,7 +241,7 @@ public class ManagerPanel extends BorderPane {
         return grid;
     }
 
-    private VBox statsPanel(ObservableList<Librarian> librarians){
+    public VBox statsPanel(ObservableList<Librarian> librarians){
 
         VBox vBox = new VBox();
 
@@ -278,11 +285,11 @@ public class ManagerPanel extends BorderPane {
         // Add labels and values for books sold, librarians, managers, and bill
         Label librarians = new Label("Number of Books Sold: ");
         librarians.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
-        Label librariansValue = new Label(String.valueOf(writingToFiles.getBooksSold()));
+        Label librariansValue = new Label(String.valueOf(writingToFiles.getBooksSold("res/booksSold1.bin")));
         librariansValue.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
         Label managers = new Label("Total Earning: ");
         managers.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
-        Label managersValue = new Label("$" + writingToFiles.getTotalBill());
+        Label managersValue = new Label("$" + writingToFiles.getTotalBill("res/totalBill1.bin"));
         managersValue.setFont(Font.font("Tahoma", FontWeight.BOLD, 14));
 
         // Add the labels to the grid

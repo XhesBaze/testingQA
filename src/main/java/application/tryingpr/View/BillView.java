@@ -29,11 +29,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SuppressWarnings("ALL")
 public class BillView extends BorderPane{
 
+    public BillView(){
+
+    }
+
     @SuppressWarnings(value = "unchecked")
     private final TableView<Book> table = new TableView<>();
     private final AtomicInteger quantity = new AtomicInteger();
     private double totalPrice = 0.0;
-    private int billId = writingToFiles.getNumberOfBills();
+    private int billId = writingToFiles.getNumberOfBills("res/Bills");
     private final ObservableList<Book> books1 = FXCollections.observableArrayList();
     private final Label totalPriceLabel = new Label("Total: $" + totalPrice);
 
@@ -108,7 +112,10 @@ public class BillView extends BorderPane{
         setRight(bottomBox);
     }
 
-    private TableView<Book> billTable(){
+    public TableView<Book>getTable(){
+        return table;
+    }
+    public TableView<Book> billTable(){
         // Create a TableColumn object for ISBN
         TableColumn<Book, String> isbnColumn = new TableColumn<>("ISBN");
         // Bind the ISBN value from the Book object to the ISBN column

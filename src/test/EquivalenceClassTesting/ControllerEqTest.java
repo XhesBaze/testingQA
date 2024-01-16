@@ -1,5 +1,5 @@
-package EquivalenceClassTesting;
 
+package EquivalenceClassTesting;
 import application.tryingpr.Controllers.Controller;
 import application.tryingpr.Models.Book;
 import javafx.collections.FXCollections;
