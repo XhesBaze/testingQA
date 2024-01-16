@@ -36,14 +36,12 @@ public class WritingFilesTest {
     @Test
     void testNullFilePath() {
         try {
-            // Assuming the readCredentials method is in YourClass
             writingToFiles.readCredentials("validUsername", "validPassword", null);
 
-            // If the method doesn't throw an exception, fail the test
             fail("Expected RuntimeException but no exception was thrown");
 
         } catch (RuntimeException ex) {
-            // Assert that the exception message is null
+
             assertNull(ex.getMessage());
         }
     }
@@ -59,14 +57,13 @@ public class WritingFilesTest {
         result1 = writingToFiles.getBooks(validFile.getAbsolutePath());
         assertEquals(2, result1.size());
 
-        // Test Case 2: File with invalid data causing NumberFormatException
         File invalidFile = createTestFile("InvalidFile.csv",
                 "Book1,Author1,20.0,4.5,300,Fiction,Publisher1,2022-01-01,10,2021-01-01\n" +
                         "Book2,Author2,15.0,InvalidRating,250,Non-Fiction,Publisher2,2022-02-01,5,2021-02-01");
 
         assertThrows(RuntimeException.class, () -> writingToFiles.getBooks(invalidFile.getAbsolutePath()));
 
-        // Note: No cleanup for files
+       
     }
 
     private File createTestFile(String fileName, String content) {
