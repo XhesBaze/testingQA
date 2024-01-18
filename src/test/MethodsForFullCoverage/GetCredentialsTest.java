@@ -1,4 +1,3 @@
-
 package MethodsForFullCoverage;
 import application.tryingpr.helperClasses.writingToFiles;
 import org.junit.jupiter.api.Assertions;
