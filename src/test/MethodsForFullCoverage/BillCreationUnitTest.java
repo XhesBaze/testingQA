@@ -27,9 +27,7 @@ public class BillCreationUnitTest {
         sampleBooks.add(new Book("Book1"));
         sampleBooks.add(new Book("Book2"));
         sampleBooks.add(new Book("Book3"));
-
         Bill bill = new Bill(sampleBooks, "123", 2, 50.0, "2024-01-06");
-
         Assertions.assertEquals(sampleBooks, bill.getBooks());
     }
 }
